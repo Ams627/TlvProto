@@ -1,11 +1,6 @@
 ﻿namespace TlvProto
 {
-    enum TlvTypeCodes
-    {
-        Int = 1
-    }
-
-    enum TlvTas
+    enum TlvTags
     {
         ID_PROD_FFL_NUMERO_VERSION = 6033,
         ID_PROD_FFL_IAP = 6034,
