@@ -3,9 +3,9 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 
-namespace TlvProto
+namespace TlvSerialise
 {
-    partial class TlvSerialisable : ITlvSerialisable
+    public class TlvSerialisable 
     {
         static (bool ok, int length, uint result) ConvertToTlv(int input)
         {
