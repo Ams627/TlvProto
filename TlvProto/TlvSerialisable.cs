@@ -172,10 +172,15 @@ namespace TlvProto
                     }
                     else if (type == TlvTypes.Date)
                     {
+                        bool isEndDate = Attribute.IsDefined(property, typeof(TlvEndDateAttribute));
                         var date = (DateTime)value;
+                        if (date.Year > 2999)
+                        {
+                            date = new DateTime(2999, 12, 31);
+                        }
                         var seconds = (UInt64)(date - new DateTime(1970, 1, 1)).TotalSeconds;
                         // dates of 31-Dec-2999 always have the time component at 23:59:59
-                        if (date.Date == new DateTime(2999, 12, 31).Date)
+                        if (date.Date == new DateTime(2999, 12, 31).Date || isEndDate)
                         {
                             seconds += 3600 * 24 - 1;
                         }
@@ -186,35 +191,31 @@ namespace TlvProto
                     }
                     else if (type == TlvTypes.Array)
                     {
-                        var tempStream = new MemoryStream();
-                        var tempStream2 = new MemoryStream();
                         var sequence = (IEnumerable)value;
                         if (sequence != null)
                         {
-                            foreach (var element in sequence)
+                            using (var tempStream = new MemoryStream())
                             {
-                                var serialisable = element as TlvSerialisable;
-                                serialisable?.Serialise(tempStream2);
-                                var tlvInner = ConvertToTlv((uint)tempStream2.Length);
-                                AddIntToStream(tempStream, tlvInner.result, tlvInner.length);
-                                tempStream2.Position = 0;
-                                tempStream2.CopyTo(tempStream);
+                                foreach (var element in sequence)
+                                {
+                                    var serialisable = element as TlvSerialisable;
+
+                                    using (var tempStream2 = new MemoryStream())
+                                    {
+                                        serialisable?.Serialise(tempStream2);
+                                        var tlvInner = ConvertToTlv((uint)tempStream2.Length);
+                                        AddIntToStream(tempStream, tlvInner.result, tlvInner.length);
+                                        tempStream2.Position = 0;
+                                        tempStream2.CopyTo(tempStream);
+                                    }
+                                }
+                                var tlv = ConvertToTlv((UInt64)tempStream.Length);
+                                AddIntToStream(s, tlv.result, tlv.length);
+                                tempStream.Position = 0;
+                                tempStream.CopyTo(s);
                             }
                         }
-                        var tlv = ConvertToTlv((UInt64)tempStream.Length);
-                        AddIntToStream(s, tlv.result, tlv.length);
-                        tempStream.Position = 0;
-                        tempStream.CopyTo(s);
                     }
-
-
-                    if (s is MemoryStream)
-                    {
-                        byte[] ba = (s as MemoryStream).ToArray();
-                        Console.WriteLine();
-                    }
-
-                    Console.WriteLine($"property name {name} value {value} tag {tag}");
                 }
             }
         }

@@ -13,15 +13,12 @@ namespace TlvProto
         {
             try
             {
-                var m = new MemoryStream();
-                var n = new S1();
-                n.Serialise(m);
-                using (var fs = new FileStream(@"c:\temp\fs1.txt", FileMode.Create, FileAccess.Write))
+                var n = new Quicks();
+                using (var fs = new FileStream(@"q:\temp\t1.tlv", FileMode.Create, FileAccess.Write))
                 {
                     byte[] header = new UTF8Encoding(true).GetBytes("TLtV0100");
                     fs.Write(header, 0, header.Length);
-                    m.Position = 0;
-                    m.CopyTo(fs);
+                    n.Serialise(fs);
                 }
                 Console.WriteLine();
             }
