@@ -5,7 +5,8 @@ using System.Reflection;
 
 namespace TlvSerialise
 {
-    public class TlvSerialisable 
+    public interface ITlvSerialisable { } // it's a mixin and it is deliberately empty
+    public static class TlvSerialisable 
     {
         static (bool ok, int length, uint result) ConvertToTlv(int input)
         {
@@ -125,9 +126,9 @@ namespace TlvSerialise
             s.WriteByte((byte)(i & 0xFF));
         }
 
-        public void Serialise(Stream s)
+        public static void Serialise(this ITlvSerialisable self, Stream s)
         {
-            PropertyInfo[] properties = this.GetType().GetProperties();
+            PropertyInfo[] properties = self.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 if (Attribute.IsDefined(property, typeof(TlvAttribute)))
@@ -136,7 +137,7 @@ namespace TlvSerialise
                     var tag = attribute.Tag;
                     var module = attribute.Module;
                     var name = property.Name;
-                    var value = property.GetValue(this);
+                    var value = property.GetValue(self);
                     var type = attribute.Type;
 
                     tag |= 0x4000;
@@ -198,7 +199,7 @@ namespace TlvSerialise
                             {
                                 foreach (var element in sequence)
                                 {
-                                    var serialisable = element as TlvSerialisable;
+                                    var serialisable = element as ITlvSerialisable;
 
                                     using (var tempStream2 = new MemoryStream())
                                     {

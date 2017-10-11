@@ -4,7 +4,7 @@ using TlvSerialise;
 
 namespace TlvProto
 {
-    class S2 : TlvSerialisable
+    class S2 : ITlvSerialisable
     {
         [Tlv(TlvTypes.String, TlvTags.ID_PROD_FFL_ORIG_CODE)]
         public String First { get; set; } 
@@ -12,7 +12,7 @@ namespace TlvProto
         [Tlv(TlvTypes.String, TlvTags.ID_PROD_FFL_DEST_CODE)]
         public string Second { get; set; }
     }
-    class S1 : TlvSerialisable
+    class S1 : ITlvSerialisable
     {
         //[Tlv(TlvTypes.UInt, TlvTags.ID_PROD_FFL_NUMERO_VERSION)]
         public int Version { get; set; } = 67;
@@ -26,7 +26,7 @@ namespace TlvProto
         [Tlv(TlvTypes.Array, TlvTags.ID_PROD_FFL_PRODUCT)] // 0x1793
         public List<S2> SList { get; set; } = new List<S2> { new S2 { First = "0438", Second = "0065"} };
     }
-    class QuickSelect : TlvSerialisable
+    class QuickSelect : ITlvSerialisable
     {
         [Tlv(TlvTypes.UInt, TlvTags.ID_QCKSEL_CODE)]public int Code { get; set; }
 
@@ -60,7 +60,7 @@ namespace TlvProto
         public string TimebandName { get; set; }
     }
 
-    class Quicks : TlvSerialisable
+    class Quicks : ITlvSerialisable
     {
         [Tlv(TlvTypes.Array, TlvTags.ID_QCKSEL_PRODUCT)]
         public List<QuickSelect> QSList { get; set; } =
