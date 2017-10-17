@@ -5,7 +5,10 @@ using System.Reflection;
 
 namespace TlvSerialise
 {
-    public interface ITlvSerialisable { } // it's a mixin and it is deliberately empty
+    // it's a mixin and it is deliberately empty:
+    public interface ITlvSerialisable
+    {
+    }
     public static class TlvSerialisable 
     {
         static (bool ok, int length, uint result) ConvertToTlv(int input)
