@@ -159,9 +159,17 @@ namespace TlvSerialise
                         s.WriteByte((byte)type);
                         AddIntToStream(s, tlv.result, tlv.length);
                     }
+                    else if (type == TlvTypes.BoolToZeroOne)
+                    {
+                        var zeroOne = (bool)value ? 1 : 0;
+                        var tlv = ConvertToTlv(zeroOne);
+                        s.WriteByte((byte)(tlv.length + 1));
+                        s.WriteByte((byte)TlvTypes.UInt);
+                        AddIntToStream(s, tlv.result, tlv.length);
+                    }
                     else if (type == TlvTypes.String)
                     {
-                        var str = (string)value;
+                        var str = value.ToString();
                         // add the length of the string to the output stream:
                         var tlv = ConvertToTlv(str.Length + 1);
                         AddIntToStream(s, tlv.result, tlv.length);

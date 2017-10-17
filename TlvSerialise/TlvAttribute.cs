@@ -1,5 +1,9 @@
 ﻿namespace TlvSerialise
 {
+    public class TlvTest
+    {
+
+    }
     /// <summary>
     /// Add this attribute to a public property of a class to indicate a TLV field. The class must inherit from TLVSerialisable
     /// and the property will be serialised to TLV if this attribute is present on it.

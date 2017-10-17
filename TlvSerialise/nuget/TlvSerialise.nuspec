@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>TlvSerialise</id>
-    <version>1.0.5</version>
+    <version>1.0.10</version>
     <title>TlvSerialise</title>
     <authors>Adrian Sims</authors>
     <owners>Adrian Sims</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Serialise TLV to a stream</description>
-    <releaseNotes>Added missing tags</releaseNotes>
+    <releaseNotes>Better handling of TLV strings</releaseNotes>
     <copyright>Copyright 2017 Parkeon</copyright>
     <dependencies>
         <dependency id="System.ValueTuple" version="4.3.0"/>

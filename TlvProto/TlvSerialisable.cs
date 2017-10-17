@@ -160,7 +160,7 @@ namespace TlvProto
                     }
                     else if (type == TlvTypes.String)
                     {
-                        var str = (string)value;
+                        var str = value.ToString();
                         // add the length of the string to the output stream:
                         var tlv = ConvertToTlv(str.Length + 1);
                         AddIntToStream(s, tlv.result, tlv.length);
