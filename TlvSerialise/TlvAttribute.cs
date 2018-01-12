@@ -16,20 +16,25 @@
     public class TlvAttribute : System.Attribute
     {
         const int VenteModule = 6;
-        public int Tag { get; private set; }
-        public int Module { get; private set; }
-        public TlvTypes Type { get; set; }
+        private readonly int _tag;
+        private readonly int _module;
+        private readonly TlvTypes _type;
+
+        public int Module => _module;
+        public TlvTypes Type => _type;
+        public int Tag => _tag;
+
         public TlvAttribute(TlvTypes type, TlvTags tag, int module = VenteModule)
         {
-            Type = type;
-            Tag = (int)tag;
-            Module = module;
+            _type = type;
+            _tag = (int)tag;
+            _module = module;
         }
         public TlvAttribute(TlvTypes type, int tag, int module = VenteModule)
         {
-            Type = type;
-            Tag = tag;
-            Module = module;
+            _type = type;
+            _tag = tag;
+            _module = module;
         }
     }
 
